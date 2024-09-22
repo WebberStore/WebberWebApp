@@ -17,6 +17,7 @@ const AnimatedRoutes = () => {
         <Route path="/verify" element={<Verify />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/users" element={<Users />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
