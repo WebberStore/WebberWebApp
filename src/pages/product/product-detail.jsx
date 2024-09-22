@@ -70,11 +70,7 @@ function ProductDetail() {
       <div class=" bg-gray-100/10 rounded-xl shadow border-2 mx-6 md:mx-24 my-6 p-4 relative">
         <div class="flex flex-col lg:flex-row px-4 md:px-10 pt-10">
           <img class="rounded shadow-md object-cover w-full h-[50vh]" src={product.image}></img>
-          <div class="space-y-4 py-3 mt-4 lg:mt-0 md:px-10 lg:text-right">
-            <div class="block font-bold text-gray-600 text-4xl md:text-6xl">{product.name}</div>
-            <div class="block text-gray-600 text-xl"> {product.seller?.name}</div>
-            <div class="block text-gray-600 text-lg">{product.description}</div>
-            <div class="block font-bold text-gray-600 text-xl">Only {product.stock} Items Left</div>
+          
             <p class="block font-bold text-gray-600 text-2xl"> Rs {product.selling_price?.toFixed(2)}</p>
             <p class="text-base text-red-500 py-0">
               <abbr title="Required field">*</abbr>
@@ -103,13 +99,7 @@ function ProductDetail() {
               <Table.HeadCell>Manufactured Date</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">{product.type}</Table.Cell>
-                <Table.Cell>{product.measurement_unit}</Table.Cell>
-                <Table.Cell>{product.age_limit}</Table.Cell>
-                <Table.Cell>{expiryDate}</Table.Cell>
-                <Table.Cell>{manuDate}</Table.Cell>
-              </Table.Row>
+            
             </Table.Body>
           </Table>
           <div className="pt-1">
