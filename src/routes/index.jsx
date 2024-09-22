@@ -18,7 +18,18 @@ const AnimatedRoutes = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment-success" element={<PaymentConfirmation />} />
+        <Route path="/product-add" element={<ProductForm />} />
+        <Route path="/product-edit/:product_id" element={<ProductForm />} />
+        <Route path="/product-detail/:product_id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/tickets" element={<Tickets />} />
+        <Route path="/tickets/:ticket_id" element={<TicketDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
