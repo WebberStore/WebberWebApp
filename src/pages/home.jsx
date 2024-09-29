@@ -11,6 +11,7 @@ const Home = () => {
   const [productRes, setproductRes] = useState(null);
   const [page, setPage] = useState(1);
   const [filterQuery, setFilterQuery] = useState('');
+  const [sortQuery, setSortQuery] = useState('');
 
   const { filters, sorts } = useSelector((store) => store.ui.products);
 
