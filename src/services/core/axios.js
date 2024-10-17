@@ -21,10 +21,10 @@ export const apiRequest = async (request, showLoader = true) => {
   const response = await request()
     .then((res) => res.data)
     .catch(async (error) => {
-      const message = error.response.data.message;
+      const message = error.response.data?.message;
       if (error.response.status === 403) {
         if (localStorage.getItem('access_token')) toast.error(message);
-      } else if (error.response.status === 401 && error.response.data.message === 'Token has expired') {
+      } else if (error.response.status === 401 && message === 'Token has expired') {
         await refreshToken();
         return await apiRequest(request, showLoader);
       } else {

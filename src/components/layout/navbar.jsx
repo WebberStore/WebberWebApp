@@ -4,7 +4,6 @@ import { Navbar } from 'flowbite-react';
 import { UserIcon, LogoutIcon } from '@heroicons/react/solid';
 import { isEmpty } from 'lodash';
 import { Button } from '../common';
-import { logout } from '../../services';
 
 const NavLink = ({ path, label }) => {
   const location = useLocation();
@@ -21,15 +20,14 @@ const Header = () => {
   const user = useSelector((store) => store.data.user.authUser);
 
   const logoutClick = () => {
-    logout(false);
     navigate('/login');
   };
 
   return (
     <Navbar fluid={true} rounded={false} class="border-gray-200 bg-white px-2 py-4 dark:border-gray-700 dark:bg-gray-800 sm:px-4 shadow-xl shadow-gray-100">
       <Navbar.Brand href="/">
-        <img src="/assets/logo.png" class="mr-3 h-6 sm:h-9" alt="Pharmaceutical Logo" />
-        <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white ml-2">Pharmaceutical</span>
+        <img src="/assets/logo.png" class="mr-3 h-6 sm:h-9" alt="Webber Logo" />
+        <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white ml-2">Webber</span>
       </Navbar.Brand>
       <div class="flex md:order-2">
         <div class="flex justify-center items-center gap-x-2">
@@ -61,7 +59,7 @@ const Header = () => {
             <NavLink path="/tickets" label="Tickets" />
           </>
         )}
-        {user?.role === 'admin' && (
+        {user?.role === 'Admin' && (
           <>
             <NavLink path="/dashboard" label="Dashboard" />
             <NavLink path="/orders" label="Orders" />

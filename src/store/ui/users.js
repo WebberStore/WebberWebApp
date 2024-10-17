@@ -11,10 +11,6 @@ const initialState = {
       label: 'Email',
     },
     {
-      key: 'address',
-      label: 'Address',
-    },
-    {
       key: 'mobile',
       label: 'Mobile',
     },
@@ -23,15 +19,15 @@ const initialState = {
       label: 'Role',
       options: [
         {
-          key: 'admin',
+          key: 'Admin',
           label: 'Admin',
         },
         {
-          key: 'buyer',
-          label: 'Buyer',
+          key: 'User',
+          label: 'User',
         },
         {
-          key: 'seller',
+          key: 'Seller',
           label: 'Seller',
         },
       ],

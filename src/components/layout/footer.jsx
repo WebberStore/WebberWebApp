@@ -3,7 +3,7 @@ import { FooterComponent } from 'flowbite-react';
 const Footer = () => {
   return (
     <FooterComponent container={true}>
-      <FooterComponent.Copyright href="#" by="Arachnophobia" year={2023} />
+      <FooterComponent.Copyright href="#" by="Arachnophobia" year={2024} />
       <FooterComponent.LinkGroup>
         <FooterComponent.Link href="/">Home</FooterComponent.Link>
         <FooterComponent.Link href="/contact">Contact</FooterComponent.Link>

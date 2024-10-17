@@ -1,31 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { pick } from 'lodash';
 
-const allowedTypes = ['Supplements and Herbs', 'Sports and Nutrition', 'Medicine', 'Beauty', 'Bath'].map((type) => ({ key: type, label: type }));
-
 const initialState = {
   formData: {
     name: '',
-    type: '',
-    measurement_unit: '',
-    age_limit: 2,
-    markup_price: 0,
-    exp_date: '',
-    manufactured_date: '',
     description: '',
-    stock: 5,
-    image: '',
+    categoryId: '',
+    price: 0,
+    imageUrl: '',
   },
   filters: [
     { key: 'name', label: 'Name' },
-    {
-      key: 'type',
-      label: 'Type',
-      options: allowedTypes,
-    },
-    { key: 'measurement_unit', label: 'Unit' },
-    { key: 'description', label: 'Description' },
-    { key: 'age_limit', label: 'Age Limit' },
   ],
   sorts: [
     {
@@ -39,7 +24,6 @@ const initialState = {
       direction: 0,
     },
   ],
-  allowedTypes,
 };
 
 export const slice = createSlice({
@@ -47,7 +31,7 @@ export const slice = createSlice({
   initialState,
   reducers: {
     setFormData(state, action) {
-      state.formData = pick(action.payload, ['name', 'type', 'description', 'stock', 'measurement_unit', 'age_limit', 'markup_price', 'exp_date', 'manufactured_date', 'image']);
+      state.formData = pick(action.payload, ['name', 'description', 'categoryId', 'price', 'imageUrl']);
     },
   },
 });

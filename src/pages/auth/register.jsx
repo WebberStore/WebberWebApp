@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { KeyIcon, MailIcon, UserIcon, LocationMarkerIcon, PhoneIcon, OfficeBuildingIcon, DocumentTextIcon } from '@heroicons/react/solid';
-import { Input, Button, Lottie, Dropdown, Divider } from '../../components/common';
+import { KeyIcon, MailIcon, UserIcon, PhoneIcon } from '@heroicons/react/solid';
+import { Input, Button, Lottie, Dropdown } from '../../components/common';
 import { Layout } from '../../components/layout';
 import { register } from '../../services';
 import { setFormData } from '../../store/ui/register';
@@ -35,21 +35,15 @@ const Register = () => {
     );
   };
 
-  const handleBusinessInputChange = ({ target: { id, value } }) => {
-    dispatch(
-      setFormData({
-        ...formData,
-        business: {
-          ...formData.business,
-          [id]: value.trim(),
-        },
-      }),
-    );
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
-    await register({ ...formData, business: formData.role === 'seller' ? formData.business : undefined }).then((data) => {
+    await register({...formData, confirmPassword: formData.password, address: {
+      city: "-",
+      state: "-",
+      country: "-",
+      postalCode: "-",
+      street: "-"
+    }}).then((data) => {
       if (data) {
         navigateTo('/login');
         dispatch(setFormData({}));
@@ -70,67 +64,18 @@ const Register = () => {
         </div>
         <form class="flex flex-col " onSubmit={onSubmit}>
           <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
-            <Input type="text" id="name" placeholder="Name" required value={formData.name} onChange={handleInputChange} prefixIcon={<UserIcon />} wrapperclasses="w-full" />
+            <Input type="text" id="firstName" placeholder="First Name" required value={formData.firstName} onChange={handleInputChange} prefixIcon={<UserIcon />} wrapperclasses="w-full" />
+            <Input type="text" id="lastName" placeholder="Last Name" required value={formData.lastName} onChange={handleInputChange} prefixIcon={<UserIcon />} wrapperclasses="w-full" />
+            <Input type="text" id="username" placeholder="Username" required value={formData.username} onChange={handleInputChange} prefixIcon={<UserIcon />} wrapperclasses="w-full" />
             <Input type="text" id="email" placeholder="Email" required value={formData.email} onChange={handleInputChange} prefixIcon={<MailIcon />} wrapperclasses="w-full" />
           </div>
           <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
-            <Input type="text" id="address" placeholder="Address" required value={formData.address} onChange={handleInputChange} prefixIcon={<LocationMarkerIcon />} wrapperclasses="w-full" />
-            <Input type="text" id="mobile" placeholder="Mobile" required value={formData.mobile} onChange={handleInputChange} prefixIcon={<PhoneIcon />} wrapperclasses="w-full" />
+            <Input type="text" id="phoneNumber" placeholder="Mobile" required value={formData.phoneNumber} onChange={handleInputChange} prefixIcon={<PhoneIcon />} wrapperclasses="w-full" />
           </div>
           <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
             <Input id="password" type="password" placeholder="Password" required value={formData.password} onChange={handleInputChange} prefixIcon={<KeyIcon />} wrapperclasses="w-full" />
             <Dropdown id="role" filterkey="role" options={allowedRoles} className="h-12 sm:h-14" wrapperclasses="my-2 sm:my-0" onChange={handleInputChange} />
           </div>
-          {formData.role === 'seller' && (
-            <>
-              <span class="w-full text-center font-semibold mt-2">Business Details</span>
-              <Divider className="my-4" />
-              <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
-                <Input
-                  type="text"
-                  id="name"
-                  placeholder="Business Name"
-                  required
-                  value={formData.business?.name}
-                  onChange={handleBusinessInputChange}
-                  prefixIcon={<OfficeBuildingIcon />}
-                  wrapperclasses="w-full"
-                />
-                <Input
-                  type="text"
-                  id="email"
-                  placeholder="Business Email"
-                  required
-                  value={formData.business?.email}
-                  onChange={handleBusinessInputChange}
-                  prefixIcon={<MailIcon />}
-                  wrapperclasses="w-full"
-                />
-              </div>
-              <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
-                <Input
-                  type="text"
-                  id="license_number"
-                  placeholder="License Number"
-                  required
-                  value={formData.business?.license_number}
-                  onChange={handleBusinessInputChange}
-                  prefixIcon={<DocumentTextIcon />}
-                  wrapperclasses="w-full"
-                />
-                <Input
-                  type="text"
-                  id="owner_nic"
-                  placeholder="Owner NIC"
-                  required
-                  value={formData.business?.owner_nic}
-                  onChange={handleBusinessInputChange}
-                  prefixIcon={<DocumentTextIcon />}
-                  wrapperclasses="w-full"
-                />
-              </div>
-            </>
-          )}
           <Button className="px-12 py-3.5 mt-5">Register</Button>
           <div class="group flex justify-end items-center mt-6">
             <div ref={loginBtn} class="flex justify-center items-center">

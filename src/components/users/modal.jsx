@@ -6,10 +6,8 @@ import { Input, Button } from '../common';
 import { createUser, updateUser } from '../../services';
 
 const initialFormData = {
-  name: '',
   email: '',
-  mobile: '',
-  address: '',
+  phoneNumber: '',
 };
 
 const UserModal = ({ user, show, setShow, refresh = () => { } }) => {
@@ -24,12 +22,11 @@ const UserModal = ({ user, show, setShow, refresh = () => { } }) => {
   const onSubmit = async () => {
     if (!isEmpty(user)) {
       await updateUser(
-        user._id,
+        user.id,
         omitBy(
           {
             name: formData.name,
             mobile: formData.mobile,
-            address: formData.address,
           },
           isEmpty,
         ),
@@ -39,7 +36,7 @@ const UserModal = ({ user, show, setShow, refresh = () => { } }) => {
         }
       });
     } else {
-      await createUser({ ...formData, is_verified: true, role: 'admin' }).then((res) => {
+      await createUser(formData).then((res) => {
         if (res.success) {
           toast.success('User added successfully');
           setFormData(initialFormData);
@@ -69,10 +66,9 @@ const UserModal = ({ user, show, setShow, refresh = () => { } }) => {
       <Modal.Body>
         <form>
           <div class="flex flex-col mb-4">
-            <Input placeholder="Name" name="name" label value={formData.name} className="h-12 sm:h-14" required onChange={onChange} />
+            <Input placeholder="Username" name="username" label value={formData.username} className="h-12 sm:h-14" required onChange={onChange} />
             {isEmpty(user) && <Input placeholder="Email" name="email" label value={formData.email} className="h-12 sm:h-14" required onChange={onChange} />}
-            <Input placeholder="Mobile" name="mobile" label value={formData.mobile} className="h-12 sm:h-14" required onChange={onChange} />
-            <Input placeholder="Address" name="address" label value={formData.address} className="h-12 sm:h-14" required onChange={onChange} />
+            <Input placeholder="Mobile" name="phoneNumber" label className="h-12 sm:h-14" required onChange={onChange} />
           </div>
         </form>
       </Modal.Body>

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { default as jwtDecode } from 'jwt-decode';
 import { setAuthUser } from '../store/data/user';
+import { getCurrentUser } from '../services';
 
 const protectedRoutes = ['payment', 'payment-confirmation', 'dashboard', 'orders', 'tickets'];
 
@@ -18,8 +18,9 @@ const useAuth = () => {
       navigate('/login');
     }
     if (token) {
-      const user = jwtDecode(token);
-      dispatch(setAuthUser(user));
+      getCurrentUser().then(res=>{
+        dispatch(setAuthUser(res));
+      })
     }
   };
 

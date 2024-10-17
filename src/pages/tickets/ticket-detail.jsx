@@ -53,7 +53,7 @@ function TicketDetail() {
                         {startCase(ticket.status)}
                     </span>
                     {
-                        user.role === "admin" && ticket.status === "open" && <Button
+                        user.role === "Admin" && ticket.status === "open" && <Button
                             className="px-12 py-2 font-semibold md:text-lg focus:outline-none focus:ring focus:ring-offset-1 bg-primary-base focus:ring-black focus:ring-opacity-10"
                             onClick={onClickCloseTicket}
                         >
@@ -63,7 +63,7 @@ function TicketDetail() {
                 </div>
                 {
                     ticket.replies?.map((reply) => {
-                        return <div key={reply._id} className='my-6 border-b-2' dir={user._id === reply.user?._id ? "rtl" : "ltr"}>
+                        return <div key={reply._id} className='my-6 border-b-2' dir={user.id === reply.user?.id ? "rtl" : "ltr"}>
                             <div class="font-semibold text-md mt-2">{reply.user?.name}</div>
                             <div class="font-normal text-xs mt-2">{new Date(reply.timestamp).toLocaleString()}</div>
                             <div class="font-semibold text-md mt-2 mb-6 text-ellipsis break-all">{reply.message}</div>

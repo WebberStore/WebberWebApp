@@ -2,25 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   formData: {
-    name: '',
     email: '',
     password: '',
-    address: '',
-    role: 'buyer',
-    business: {
-      name: '',
-      email: '',
-      license_number: '',
-      owner_nic: '',
-    },
+    role: 'User',
   },
   allowedRoles: [
     {
-      key: 'buyer',
-      label: 'Buyer',
+      key: 'User',
+      label: 'User',
     },
     {
-      key: 'seller',
+      key: 'Seller',
       label: 'Seller',
     },
   ],

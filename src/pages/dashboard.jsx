@@ -26,11 +26,6 @@ const Dashboard = () => {
     return (
         <Layout title="Dashboard">
             <div class="w-full flex justify-center items-center flex-wrap px-12">
-                <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 mt-12 mb-4">
-                    <Card title="Buyer Registrations" value={totals.registrations?.buyers ?? 0} />
-                    <Card title="Seller Registrations" value={totals.registrations?.sellers ?? 0} />
-                </div>
-                <Divider className="my-4"/>
                 <div className="w-full flex flex-col lg:flex-row justify-between items-center gap-4 mt-4 mb-4">
                     <Card title="Orders" value={totals.orders ?? 0} />
                     <Card title="Succeeded Payments" value={totals.payments?.succeeded ?? 0} />

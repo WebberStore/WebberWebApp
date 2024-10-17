@@ -3,31 +3,32 @@ import { useNavigate } from 'react-router-dom';
 import { Table } from 'flowbite-react';
 import { default as Layout } from '../components/layout';
 import { Button, Lottie } from '../components/common';
-import { getAllProductsWithoutPagination, placeOrder } from '../services';
+import { getSingleProduct, placeOrder } from '../services';
 import toast from '../libs/toastify';
 import CartAnimation from '../../public/assets/animations/cart.json';
 import NoActivityAnimation from '../../public/assets/animations/no-activity.json';
+import { useSelector } from 'react-redux';
 
 const Cart = () => {
   const [products, setProducts] = useState([]);
+
+  const user = useSelector((store) => store.data.user.authUser);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
     if (cart.length) {
-      getAllProductsWithoutPagination(`filter[_id]=in(${cart})`).then((data) => {
-        if (data) setProducts(data.data);
+      getSingleProduct(cart[0]).then((data) => {
+        if (data) setProducts([data]);
       });
     }
   }, []);
 
   const confirmOrder = async () => {
     const order = await placeOrder(
-      products.map((p) => ({
-        _id: p._id,
-        quantity: 1,
-      })),
+      products,
+      user
     );
     if (order.data) {
       navigate(`/payment?order=${order.data._id}`);
@@ -60,20 +61,14 @@ const Cart = () => {
             <Table striped={true} hoverable={true} class="w-full">
               <Table.Head>
                 <Table.HeadCell>Product Name</Table.HeadCell>
-                <Table.HeadCell>Selling Price</Table.HeadCell>
-                <Table.HeadCell>Type</Table.HeadCell>
-                <Table.HeadCell>Unit</Table.HeadCell>
-                <Table.HeadCell>Age Limit</Table.HeadCell>
+                <Table.HeadCell>Price</Table.HeadCell>
               </Table.Head>
               <Table.Body class="divide-y">
                 {products?.map((product) => {
                   return (
                     <Table.Row class="bg-white dark:border-gray-700 dark:bg-gray-800">
                       <Table.Cell>{product.name}</Table.Cell>
-                      <Table.Cell>LKR {product.selling_price.toFixed(2)}</Table.Cell>
-                      <Table.Cell>{product.type}</Table.Cell>
-                      <Table.Cell>{product.measurement_unit}</Table.Cell>
-                      <Table.Cell>{product.age_limit}</Table.Cell>
+                      <Table.Cell>LKR {product.price.toFixed(2)}</Table.Cell>
                     </Table.Row>
                   );
                 })}

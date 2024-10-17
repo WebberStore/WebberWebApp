@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { MdPhotoCamera } from 'react-icons/md';
 import { Layout } from '../../components/layout';
 import { Button, Dropdown, Input } from '../../components/common';
-import { createProduct, getSingleProduct, updateProduct } from '../../services';
+import { createProduct, getAllCategories, getSingleProduct, updateProduct } from '../../services';
 import { setFormData } from '../../store/ui/products';
 import { useEffectOnce } from '../../hooks';
 import toast from '../../libs/toastify';
@@ -13,7 +13,9 @@ import base64EncodeImage from '../../utils/image';
 const ProductForm = () => {
   const { product_id: productId } = useParams();
 
-  const { formData, allowedTypes } = useSelector((state) => state.ui.products);
+  const [categories, setCategories] = useState([]);
+
+  const { formData } = useSelector((state) => state.ui.products);
 
   const navigateTo = useNavigate();
 
@@ -25,10 +27,18 @@ const ProductForm = () => {
     dispatch(
       setFormData({
         ...formData,
+        categoryId: formData.categoryId ? Number(formData.categoryId) : undefined,
         [id]: value?.trim(),
       }),
     );
   };
+
+  useEffectOnce(() => {
+    getAllCategories().then((data) => {
+      setCategories(data);
+      dispatch(setFormData({ categoryId: data[0].id }));
+    });
+  }, []);
 
   useEffectOnce(() => {
     if (productId) {
@@ -60,28 +70,10 @@ const ProductForm = () => {
               <div class="flex flex-col">
                 <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
                   <Input id="name" placeholder="Product Name" label wrapperclasses="w-full" onChange={handleInputChange} required value={formData.name} />
-                  <Dropdown id="type" filterkey="type" label="Type" options={allowedTypes} className="h-14" wrapperclasses="my-2 sm:my-0" onChange={handleInputChange} />
+                  <Dropdown id="categoryId" filterkey="categoryId" label="Category" options={categories?.map((c) => ({ key: c.id?.toString(), label: c.name }))} className="h-14" wrapperclasses="my-2 sm:my-0" onChange={handleInputChange} />
                 </div>
                 <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
-                  <Input
-                    id="measurement_unit"
-                    type="text"
-                    label
-                    placeholder="Measurement Unit Per Product"
-                    wrapperclasses="w-full"
-                    onChange={handleInputChange}
-                    required
-                    value={formData.measurement_unit}
-                  />
-                  <Input id="age_limit" type="number" placeholder="Age Limit For Consuming Product" label wrapperclasses="w-full" onChange={handleInputChange} required value={formData.age_limit} />
-                </div>
-                <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
-                  <Input id="markup_price" type="number" placeholder="Markup Price Rs" label wrapperclasses="w-full" onChange={handleInputChange} required value={formData.markup_price} />
-                  <Input id="stock" type="number" placeholder="Available Stock" label wrapperclasses="w-full" onChange={handleInputChange} required value={formData.stock} />
-                </div>
-                <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
-                  <Input id="exp_date" placeholder="Expiry Date" label type="date" wrapperclasses="w-full" onChange={handleInputChange} required value={formData.exp_date} />
-                  <Input id="manufactured_date" placeholder="Manufactured Date" label type="date" wrapperclasses="w-full" onChange={handleInputChange} required value={formData.manufactured_date} />
+                  <Input id="price" type="number" placeholder="Price Rs" label wrapperclasses="w-full" onChange={handleInputChange} required value={formData.price} />
                 </div>
                 <div class="flex flex-col lg:flex-row justify-between items-center gap-x-3">
                   <Input id="description" placeholder="Product Description" label textarea rows="5" wrapperclasses="w-full" onChange={handleInputChange} required value={formData.description} />
@@ -92,10 +84,10 @@ const ProductForm = () => {
                 className="w-full h-[60vh] bg-gray-300 hover:bg-gray-400 mt-6 mb-10 rounded-md flex justify-center items-center cursor-pointer transition-all duration-300"
                 onClick={() => input.current?.click()}
               >
-                {!formData.image && <MdPhotoCamera className="w-24 h-24 text-white" />}
-                {formData.image && <img className="w-full h-full object-cover" src={formData.image} />}
+                {!formData.imageUrl && <MdPhotoCamera className="w-24 h-24 text-white" />}
+                {formData.imageUrl && <img className="w-full h-full object-cover" src={formData.imageUrl} />}
               </div>
-              <input ref={input} accept="image/" type="file" class="hidden" onChange={async (e) => handleInputChange({ target: { id: 'image', value: await base64EncodeImage(e.target.files) } })} />
+              <input ref={input} accept="image/" type="file" class="hidden" onChange={async (e) => handleInputChange({ target: { id: 'imageUrl', value: await base64EncodeImage(e.target.files) } })} />
               <Button className="w-full py-4">{productId ? 'Edit' : 'Add'} Batch</Button>
             </div>
           </form>

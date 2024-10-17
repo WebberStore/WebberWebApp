@@ -1,9 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { KeyIcon, MailIcon } from '@heroicons/react/solid';
+import { KeyIcon, UserIcon } from '@heroicons/react/solid';
 import { Input, Button, Checkbox, Lottie } from '../../components/common';
 import { Layout } from '../../components/layout';
-import { login } from '../../services';
+import { getCurrentUser, login } from '../../services';
 import { setFormData, toggleRememberMe } from '../../store/ui/login';
 import { setAuthUser } from '../../store/data/user';
 import LoginAnimation from '../../../public/assets/animations/login.json';
@@ -26,12 +26,12 @@ const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await login({ email: formData.email, password: formData.password }).then((data) => {
+    await login(formData).then(async (data) => {
       if (data) {
         const store = rememberMe ? localStorage : sessionStorage;
-        store.setItem('access_token', data.data.access_token);
-        store.setItem('refresh_token', data.data.refresh_token);
-        dispatch(setAuthUser(data.data.user));
+        store.setItem('access_token', data.accessToken);
+        store.setItem('refresh_token', data.refreshToken);
+        dispatch(setAuthUser(await getCurrentUser()));
         dispatch(setFormData({}));
         navigateTo('/');
       }
@@ -47,7 +47,7 @@ const Login = () => {
           </div>
         </div>
         <form class="flex flex-col" onSubmit={onSubmit}>
-          <Input type="text" id="email" placeholder="Email" required value={formData.email} onChange={handleInputChange} prefixIcon={<MailIcon />} />
+          <Input type="text" id="username" placeholder="Username" required value={formData.username} onChange={handleInputChange} prefixIcon={<UserIcon />} />
           <Input id="password" type="password" placeholder="Password" required value={formData.password} onChange={handleInputChange} prefixIcon={<KeyIcon />} />
           <div class="flex justify-between mt-4">
             <div class="flex items-center">
